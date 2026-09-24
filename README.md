@@ -6,6 +6,14 @@ O projeto analisa a série histórica (2014–2021) da remuneração média de p
 
 ---
 
+## 👥 Integrantes da Equipe
+
+- **Adair Oliveira**
+- **Michel Motta**
+- **Julia Carrilho**
+
+---
+
 ## 📌 Sumário
 
 - [Visão Geral e Objetivos](#-visão-geral-e-objetivos)
