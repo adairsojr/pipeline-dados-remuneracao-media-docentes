@@ -3,3 +3,4 @@
 select distinct
     cast(ano as integer) as ano
 from {{ source('bronze', 'remuneracao-media-docentes') }}
+where ano is not null

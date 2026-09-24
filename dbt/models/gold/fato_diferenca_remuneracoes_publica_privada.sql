@@ -16,8 +16,8 @@ remuneracao_pivotada AS (
 )
 
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['rp.ano']) }} AS tempo_sk,
-    {{ dbt_utils.generate_surrogate_key(['rp.uf']) }} AS uf_sk,
+    dim_tempo.tempo_sk, -- SK vinda da dim_tempo
+    dim_uf.uf_sk,       -- SK vinda da dim_uf
     dim_tempo.ano,
     dim_uf.uf,
     rp.valor_privada AS valor_privada,
@@ -25,10 +25,10 @@ SELECT
     rp.valor_privada - rp.valor_publica AS dif_absoluta_privada_publica,
     ROUND(((rp.valor_privada - rp.valor_publica) / NULLIF(rp.valor_publica, 0)) * 100, 2) AS dif_percentual
 FROM remuneracao_pivotada rp
-LEFT JOIN {{ ref('stg_uf') }} dim_uf
+LEFT JOIN {{ ref('dim_uf') }} dim_uf
     ON rp.uf = dim_uf.uf
-LEFT JOIN {{ ref('stg_tempo') }} dim_tempo
+LEFT JOIN {{ ref('dim_tempo') }} dim_tempo
     ON rp.ano = dim_tempo.ano
 ORDER BY 
-    ano ASC,
-    uf ASC
+    dim_tempo.ano ASC,
+    dim_uf.uf ASC

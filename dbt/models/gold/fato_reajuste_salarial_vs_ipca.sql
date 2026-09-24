@@ -4,7 +4,7 @@ WITH remuneracao_ano AS (
     SELECT 
         ano,
         uf,
-        AVG(valor) valor
+        AVG(valor) AS valor
     FROM {{ ref('stg_remuneracao_media_docentes') }}
     GROUP BY ano, uf
 ),
@@ -24,8 +24,8 @@ variacao_salarial AS (
 )
 
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['v.ano']) }} AS tempo_sk,
-    {{ dbt_utils.generate_surrogate_key(['v.uf']) }} AS uf_sk,
+    dim_tempo.tempo_sk,      -- Traz a surrogate key diretamente da dimensão de tempo
+    dim_uf.uf_sk,            -- Traz a surrogate key diretamente da dimensão de UF
     dim_tempo.ano,
     dim_uf.uf,
     ROUND(v.valor_atual, 2) AS valor_atual,
@@ -41,9 +41,9 @@ SELECT
 FROM variacao_salarial v
 LEFT JOIN {{ ref('stg_ipca') }} ipca
     ON v.ano = ipca.ano
-LEFT JOIN {{ ref('stg_uf') }} dim_uf
+LEFT JOIN {{ ref('dim_uf') }} dim_uf          -- Alterado de stg_uf para dim_uf
     ON v.uf = dim_uf.uf
-LEFT JOIN {{ ref('stg_tempo') }} dim_tempo
+LEFT JOIN {{ ref('dim_tempo') }} dim_tempo    -- Alterado de stg_tempo para dim_tempo
     ON v.ano = dim_tempo.ano
 WHERE v.ano > 2014
 ORDER BY 

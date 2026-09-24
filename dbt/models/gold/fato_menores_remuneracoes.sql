@@ -25,8 +25,9 @@ ranking_menores AS (
 )
 
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['r.uf']) }} AS uf_sk,
-    {{ dbt_utils.generate_surrogate_key(['r.ano']) }} AS tempo_sk,
+    dim_uf.uf_sk,                                                      -- SK vinda da dim_uf
+    dim_tempo.tempo_sk,                                                -- SK vinda da dim_tempo
+    dim_dependencia_administrativa.dependencia_administrativa_sk,     -- SK vinda da dim_dependencia_administrativa
     dim_tempo.ano,
     dim_uf.uf,
     dim_dependencia_administrativa.dependencia_administrativa,
@@ -35,11 +36,11 @@ FROM remuneracao r
 JOIN ranking_menores rnk 
     ON r.ano = rnk.ano 
    AND r.uf = rnk.uf
-LEFT JOIN {{ ref('stg_uf') }} dim_uf
+LEFT JOIN {{ ref('dim_uf') }} dim_uf
     ON r.uf = dim_uf.uf
-LEFT JOIN {{ ref('stg_tempo') }} dim_tempo
+LEFT JOIN {{ ref('dim_tempo') }} dim_tempo
     ON r.ano = dim_tempo.ano
-LEFT JOIN {{ ref('stg_dependencia_administrativa') }} dim_dependencia_administrativa
+LEFT JOIN {{ ref('dim_dependencia_administrativa') }} dim_dependencia_administrativa
     ON r.dependencia_administrativa = dim_dependencia_administrativa.dependencia_administrativa
 WHERE rnk.posicao <= 5
 ORDER BY 
