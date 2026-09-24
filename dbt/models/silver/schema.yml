@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: stg_remuneracao_media_docentes
+    description: >
+      Remuneração média dos docentes por ano, UF e dependência
+      administrativa.
+    columns:
+      - name: ano
+        description: Ano de referência.
+        data_type: int
+        tests:
+          - not_null
+      - name: uf
+        description: Sigla da UF, padronizada (maiúscula, sem espaços).
+        data_type: varchar
+        tests:
+          - not_null
+      - name: dependencia_administrativa
+        description: Dependência administrativa em CAIXA ALTA e SEM ACENTOS.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["ESTADUAL", "PRIVADA", "PUBLICA"]
+      - name: valor
+        description: Remuneração média (R$).
+        data_type: decimal(18, 2)
+        tests:
+          - not_null
+
+  - name: stg_ipca
+    description: Série histórica anual do IPCA (variação %).
+    columns:
+      - name: ano
+        description: Ano de referência.
+        data_type: int
+        tests:
+          - not_null
+          - unique
+      - name: valor
+        description: Variação anual do IPCA (%).
+        data_type: decimal(18, 2)
+        tests:
+          - not_null
+
+  - name: stg_uf
+    description: UFs que serão utilizadas como dimensão.
+    columns:
+      - name: uf
+        description: Sigla da UF.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_tempo
+    description: Dimensão temporal (anos de 2014 a 2020).
+    columns:
+      - name: ano
+        description: Ano.
+        data_type: int
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_dependencia_administrativa
+    description: Dependências administrativa.
+    columns:
+      - name: dependencia_administrativa
+        description: Dependência administrativa.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique

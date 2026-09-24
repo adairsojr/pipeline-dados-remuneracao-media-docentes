@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: >
+      Camada Bronze (PRESERVAÇÃO DO BRUTO): dados gravados pela ingestão
+      (Python + Pandas + deltalake), preservando os dados próximos à
+      origem, COM os defeitos.
+    tables:
+      - name: remuneracao-media-docentes
+        description: >
+          Remuneração média dos docentes por UF e dependência
+          administrativa (INEP), capturada em Delta Lake.
+        meta:
+          external_location: "delta_scan('../data/bronze/remuneracao-media-docentes')"
+        columns:
+          - name: ano
+            description: Ano de referência.
+          - name: uf
+            description: Sigla da UF.
+          - name: dependencia_administrativa
+            description: Dependência administrativa (Estadual, Privada ou Pública).
+          - name: valor
+            description: Remuneração média (R$)
+      - name: ipca
+        description: Série histórica anual do IPCA (IPEADATA), em Parquet.
+        meta:
+          external_location: "../data/bronze/ipca.snappy.parquet"
+        columns:
+          - name: ano
+            description: Ano de referência.
+          - name: valor
+            description: Variação anual do IPCA (%).

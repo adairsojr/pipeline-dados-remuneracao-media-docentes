@@ -1,0 +1,262 @@
+version: 2
+
+models:
+  - name: dim_uf
+    description: Dimensão de UF.
+    columns:
+      - name: uf_sk
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: uf
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_tempo
+    description: Dimensão temporal.
+    columns:
+      - name: tempo_sk
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: ano
+        data_type: integer
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_dependencia_administrativa
+    description: Dimensão de dependência administrativa.
+    columns:
+      - name: dependencia_administrativa_sk
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: dependencia_administrativa
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+  - name: fato_maiores_remuneracoes
+    description: >
+      Fato da maiores remunerações no grão (ano, uf, dependencia_administrativa).
+    columns:
+      - name: uf_sk
+        data_type: varchar
+        description: FK para dim_uf.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_uf')
+                field: uf_sk
+      - name: tempo_sk
+        data_type: varchar
+        description: FK para dim_tempo.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tempo')
+                field: tempo_sk
+      - name: ano
+        data_type: integer
+        description: Ano de referência.
+        tests:
+          - not_null
+      - name: uf
+        data_type: varchar
+        description: Sigla da UF, padronizada (maiúscula, sem espaços).
+        tests:
+          - not_null
+      - name: dependencia_administrativa
+        data_type: varchar
+        description: >
+          Dependência administrativa (ESTADUAL/PRIVADA/PUBLICA) ou 'TODAS'
+          para a linha de média entre dependências.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["ESTADUAL", "PRIVADA", "PUBLICA", "TODAS"]
+      - name: valor
+        data_type: decimal(18,2)
+        description: Remuneração (R$).
+        tests:
+          - not_null
+
+  - name: fato_menores_remuneracoes
+    description: >
+      Fato da menores remunerações no grão (ano, uf, dependencia_administrativa).
+    columns:
+      - name: uf_sk
+        data_type: varchar
+        description: FK para dim_uf.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_uf')
+                field: uf_sk
+      - name: tempo_sk
+        data_type: varchar
+        description: FK para dim_tempo.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tempo')
+                field: tempo_sk
+      - name: ano
+        data_type: integer
+        description: Ano de referência.
+        tests:
+          - not_null
+      - name: uf
+        data_type: varchar
+        description: Sigla da UF, padronizada (maiúscula, sem espaços).
+        tests:
+          - not_null
+      - name: dependencia_administrativa
+        data_type: varchar
+        description: >
+          Dependência administrativa (ESTADUAL/PRIVADA/PUBLICA) ou 'TODAS'
+          para a linha de média entre dependências.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["ESTADUAL", "PRIVADA", "PUBLICA", "TODAS"]
+      - name: valor
+        data_type: decimal(18,2)
+        description: Remuneração (R$).
+        tests:
+          - not_null
+
+  - name: fato_diferenca_remuneracoes_publica_privada
+    description: >
+      Fato da diferença entre as remunerações de docentes da rede privada e pública
+      no grão (ano, uf).
+    columns:
+      - name: tempo_sk
+        data_type: varchar
+        description: FK para dim_tempo.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tempo')
+                field: tempo_sk
+      - name: uf_sk
+        data_type: varchar
+        description: FK para dim_uf.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_uf')
+                field: uf_sk
+      - name: ano
+        data_type: integer
+        description: Ano de referência.
+        tests:
+          - not_null
+      - name: uf
+        data_type: varchar
+        description: Sigla da UF, padronizada (maiúscula, sem espaços).
+        tests:
+          - not_null
+      - name: valor_privada
+        data_type: decimal(18,2)
+        description: Remuneração da rede privada (R$).
+        tests:
+          - not_null
+      - name: valor_publica
+        data_type: decimal(18,2)
+        description: Remuneração da rede pública (R$).
+        tests:
+          - not_null
+      - name: dif_absoluta_privada_publica
+        data_type: decimal(18,2)
+        description: Diferença absoluta entre as redes privada e pública (R$).
+        tests:
+          - not_null
+      - name: dif_percentual
+        data_type: decimal(18,2)
+        description: Diferença percental entre as redes privada e pública (%).
+        tests:
+          - not_null
+    
+  - name: fato_reajuste_salarial_vs_ipca
+    description: >
+      Fato do reajuste salarial versus o ipca (ano, uf).
+    columns:
+      - name: tempo_sk
+        data_type: varchar
+        description: FK para dim_tempo.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tempo')
+                field: tempo_sk
+      - name: uf_sk
+        data_type: varchar
+        description: FK para dim_uf.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_uf')
+                field: uf_sk
+      - name: ano
+        data_type: integer
+        description: Ano de referência.
+        tests:
+          - not_null
+      - name: uf
+        data_type: varchar
+        description: Sigla da UF, padronizada (maiúscula, sem espaços).
+        tests:
+          - not_null
+      - name: valor_atual
+        data_type: decimal(18,2)
+        description: Remuneração média do ano atual (R$).
+        tests:
+          - not_null
+      - name: valor_ano_anterior
+        data_type: decimal(18,2)
+        description: Remuneração média do ano anterior (R$).
+        tests:
+          - not_null
+      - name: variacao_salarial
+        data_type: decimal(18,2)
+        description: Variação da remuneração entre o ano atual e o ano anterior (R$).
+        tests:
+          - not_null
+      - name: variacao_salarial_pct
+        data_type: decimal(18,2)
+        description: Variação da remuneração em percentual (%).
+        tests:
+          - not_null
+      - name: ipca
+        data_type: decimal(18,2)
+        description: IPCA do ano atual (%).
+        tests:
+          - not_null
+      - name: ganho_real
+        data_type: decimal(18,2)
+        description: Ganho real, descontado o IPCA (%).
+        tests:
+          - not_null
+      - name: desempenho
+        data_type: varchar
+        description: Positivo se o a variação salarial for maior que o IPCA.
+        tests:
+          - not_null

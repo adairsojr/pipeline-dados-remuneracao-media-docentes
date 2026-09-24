@@ -1,0 +1,8 @@
+remuneracao_docentes:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      threads: 1
+      extensions:
+        - delta
