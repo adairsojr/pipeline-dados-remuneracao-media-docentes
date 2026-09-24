@@ -10,14 +10,14 @@ remuneracao_pivotada AS (
         ano,
         uf,
         MAX(CASE WHEN UPPER(dependencia_administrativa) = 'PRIVADA' THEN valor END) AS valor_privada,
-        MAX(CASE WHEN UPPER(dependencia_administrativa) IN ('PUBLICA', 'FEDERAL', 'ESTADUAL', 'MUNICIPAL') THEN valor END) AS valor_publica
+        MAX(CASE WHEN UPPER(dependencia_administrativa) = 'PUBLICA' THEN valor END) AS valor_publica
     FROM base
     GROUP BY ano, uf
 )
 
 SELECT 
-    dim_tempo.tempo_sk, -- SK vinda da dim_tempo
-    dim_uf.uf_sk,       -- SK vinda da dim_uf
+    dim_tempo.tempo_sk,
+    dim_uf.uf_sk,
     dim_tempo.ano,
     dim_uf.uf,
     rp.valor_privada AS valor_privada,

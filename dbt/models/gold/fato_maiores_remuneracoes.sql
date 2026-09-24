@@ -25,9 +25,9 @@ ranking_maiores AS (
 )
 
 SELECT 
-    dim_uf.uf_sk,                                                      -- SK vinda da dim_uf
-    dim_tempo.tempo_sk,                                                -- SK vinda da dim_tempo
-    dim_dependencia_administrativa.dependencia_administrativa_sk,     -- SK vinda da dim_dependencia_administrativa
+    dim_uf.uf_sk,
+    dim_tempo.tempo_sk,
+    dim_dependencia_administrativa.dependencia_administrativa_sk,
     dim_tempo.ano,
     dim_uf.uf,
     dim_dependencia_administrativa.dependencia_administrativa,
