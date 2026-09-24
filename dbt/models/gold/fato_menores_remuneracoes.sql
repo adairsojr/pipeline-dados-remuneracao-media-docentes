@@ -10,19 +10,9 @@ remuneracao AS (
         ano,
         uf, 
         dependencia_administrativa, 
-        AVG(valor) AS valor
+        MAX(valor) AS valor
     FROM base
     GROUP BY ano, uf, dependencia_administrativa
-
-    UNION ALL
-
-    SELECT 
-        ano,
-        uf, 
-        'TODAS' AS dependencia_administrativa, 
-        AVG(valor) AS valor
-    FROM base
-    GROUP BY ano, uf
 ),
 
 ranking_menores AS (

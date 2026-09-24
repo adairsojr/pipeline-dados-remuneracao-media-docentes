@@ -259,6 +259,6 @@ dbt docs serve
 A integridade do pipeline é garantida de forma automatizada através dos testes nativos do dbt e do `dbt_utils`:
 
 - **Unicidade e Nulos**: Testes `unique` e `not_null` em chaves primárias e surrogates.
-- **Valores Aceitos**: Testes `accepted_values` validando categorias válidas para `dependencia_administrativa` (`ESTADUAL`, `PRIVADA`, `PUBLICA`, `TODAS`).
+- **Valores Aceitos**: Testes `accepted_values` validando categorias válidas para `dependencia_administrativa` (`ESTADUAL`, `PRIVADA`, `PUBLICA`).
 - **Integridade Referencial**: Testes `relationships` assegurando que todas as chaves estrangeiras (`tempo_sk`, `uf_sk`) nas tabelas Fato possuem correspondência direta nas tabelas de Dimensão.
 - **Linhagem e Dicionário de Dados**: Disponibilizados através do catálogo nativo gerado pelo `dbt docs`.
