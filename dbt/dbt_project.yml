@@ -1,12 +1,12 @@
-name: remuneracao_docentes
-profile: remuneracao_docentes
+name: remuneracao_media_docentes
+profile: remuneracao_media_docentes
 version: 1.0.0
 
 model-paths:
   - models
 
 models:
-  remuneracao_docentes:
+  remuneracao_media_docentes:
     silver:
       +materialized: external
       +format: parquet

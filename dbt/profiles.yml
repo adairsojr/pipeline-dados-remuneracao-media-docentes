@@ -1,4 +1,4 @@
-remuneracao_docentes:
+remuneracao_media_docentes:
   target: dev
   outputs:
     dev:
